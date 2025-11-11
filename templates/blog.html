@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Generated Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📝 AI Generated Blog</h1>
+        
+        <!-- Blog Stats -->
+        <div class="blog-stats">
+            <div class="stat-card">
+                <h3>Total Articles</h3>
+                <p class="stat-number">{{ articles|length }}</p>
+            </div>
+            <div class="stat-card">
+                <h3>Latest Article</h3>
+                <p class="stat-text">
+                    {% if articles %}
+                        {{ articles[-1].title[:30] }}...
+                    {% else %}
+                        No articles yet
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <a href="/" class="btn">Generate More Articles</a>
+            <button onclick="clearAllArticles()" class="btn-secondary">Clear All</button>
+        </div>
+
+        {% if not articles %}
+        <div class="empty-state">
+            <h3>No articles generated yet</h3>
+            <p>Go back and generate some amazing articles using AI!</p>
+            <a href="/" class="btn">Start Generating</a>
+        </div>
+        {% else %}
+        <div class="articles-grid">
+            {% for article in articles %}
+            <div class="article-card">
+                <div class="article-header">
+                    <h3 class="article-title">{{ article.title }}</h3>
+                    <span class="article-topic">Topic: {{ article.topic }}</span>
+                </div>
+                
+                <div class="article-meta">
+                    <span class="word-count">{{ article.word_count }} words</span>
+                    <span class="created-at">{{ article.created_at }}</span>
+                </div>
+                
+                <div class="article-summary">
+                    <p>{{ article.summary }}</p>
+                </div>
+                
+                <!-- DIRECT FULL CONTENT - NO READ MORE BUTTON -->
+                <div class="article-full-content">
+                    {{ article.content }}
+                </div>
+                
+                <div class="article-tags">
+                    {% for tag in article.tags %}
+                    <span class="tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        function clearAllArticles() {
+            if (confirm('Are you sure you want to clear all articles?')) {
+                fetch('/clear_articles', { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        location.reload();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error clearing articles');
+                    });
+            }
+        }
+    </script>
+</body>
+</html>

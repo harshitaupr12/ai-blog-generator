@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Blog Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 AI Blog Generator</h1>
+        <p class="subtitle">Generate comprehensive, in-depth articles on any single topic</p>
+        
+        <div class="input-section">
+            <h3>Enter a Single Topic for Deep Analysis:</h3>
+            <input type="text" id="singleTopic" placeholder="e.g., Artificial Intelligence in Healthcare, Python Web Development, Blockchain Technology..." style="width: 100%; padding: 15px; font-size: 16px; margin-bottom: 15px;">
+            
+            <div class="options">
+                <p class="note">💡 Enter one specific topic to get a comprehensive, 1000+ word article with deep analysis</p>
+            </div>
+            
+            <button onclick="generateSingleArticle()" id="generateBtn">Generate Comprehensive Article</button>
+        </div>
+
+        <div id="progressSection" class="hidden">
+            <h3>Generating Comprehensive Article</h3>
+            <div class="progress-bar">
+                <div id="progressFill" class="progress-fill"></div>
+            </div>
+            <p id="progressText">AI is researching and writing your comprehensive article...</p>
+            <p id="currentTopic"></p>
+        </div>
+
+        <div class="action-buttons">
+            <button onclick="viewBlog()">View Generated Articles</button>
+            <button onclick="clearArticles()" class="btn-secondary">Clear All Articles</button>
+        </div>
+
+        <div id="resultsSection" class="hidden">
+            <h3>Article Complete! ✅</h3>
+            <p id="resultMessage"></p>
+            <button onclick="viewBlog()" class="btn">Read Full Article</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
